@@ -4,16 +4,17 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('ping')
 		.setDescription('Replies with a Ping!')
-		.addUserOption(option =>
+		/*.addUserOption(option =>
 			option.setName("user")
 				.setDescription("user")
 				.setRequired(false)
-			),
+			)*/,
 	async execute(interaction) {
-		if (user) {
-			await interaction.reply('<@' + interaction.options.getUser('target').id + '>');
-		} else {
-			await interaction.reply('<@' + interaction.user.id + '>');
-		}
+		/*console.log(interaction.options.getUser('user'));
+		if (interaction.options.getUser('user') != null) {
+			await interaction.reply('<@' + interaction.options.getUser('user').id + '>');
+		} else {*/
+			await interaction.reply('<@' + interaction.user + '>');
+		//}
 	},
 };
