@@ -5,6 +5,6 @@ module.exports = {
 		.setName('ping')
 		.setDescription('Replies with a Ping!'),
 	async execute(interaction) {
-		await interaction.reply('<@' + interaction.id + '>');
+		await interaction.reply('<@' + interaction.user.id + '>');
 	},
 };
