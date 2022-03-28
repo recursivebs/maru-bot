@@ -1,5 +1,5 @@
 # maru-bot
 
-there is no readme
+there is no readme.
 
 you will suffer like i did
