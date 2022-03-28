@@ -68,7 +68,7 @@ const buildReport = (data, summaryData, embed) => {
             fieldValue += `${songLineText}\n`
         })
         fieldValue = "```python\n" + fieldValue + "```"
-        embed.addField(`CA Rank #${key}s - 🎖️${helpers.computeMedalsForSpecificRank(`${key}`, summaryData[`${key}`])}`, fieldValue, false)
+        embed.addField(`CA Rank #${key}s - ${summaryData[`${key}`]} x ${helpers.computeFactorForMedals(key)} = 🎖️${helpers.computeMedalsForSpecificRank(`${key}`, summaryData[`${key}`])}`, fieldValue, false)
     }
 }
 

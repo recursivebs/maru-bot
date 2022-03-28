@@ -72,7 +72,6 @@ const getMinStarValue = (inputStr) => {
 
 const getMaxStarValue = (inputStr, minStarValue) => {
 	let value = Number.parseFloat(inputStr);
-	console.log("max star value " + value)
 	if (isNaN(value)) {
 		value = maxStarValueDefault;
 	}
