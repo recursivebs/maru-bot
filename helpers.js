@@ -20,5 +20,33 @@ const extractPlayerId = (str) => {
 }
 
 
+const computeMedalsForSpecificRank = (rank, numScores) => {
+    let factor = 1;
+    if (+rank === 1) {
+        factor = 10;
+    }
+    if (+rank === 2) {
+        factor = 8;
+    }
+    if (+rank === 3) {
+        factor = 6;
+    }
+    if (+rank === 4) {
+        factor = 5;
+    }
+    if (+rank === 5) {
+        factor = 4;
+    }
+    if (+rank === 6) {
+        factor = 3;
+    }
+    if (+rank === 7) {
+        factor = 2;
+    }
+    return factor * numScores;
+}
+
+
 exports.trimEmbed = trimEmbed;
 exports.extractPlayerId = extractPlayerId;
+exports.computeMedalsForSpecificRank = computeMedalsForSpecificRank;

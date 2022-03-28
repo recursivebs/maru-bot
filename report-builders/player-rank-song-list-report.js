@@ -1,4 +1,5 @@
 const moment = require('moment');
+const helpers = require('../helpers')
 
 var groupBy = require('group-by');
 
@@ -44,7 +45,7 @@ const shortenString = (str, maxLen) => {
     return str;
 }
 
-const buildReport = (data, embed) => {
+const buildReport = (data, summaryData, embed) => {
     const groupedData = groupBy(data, 'rank')
     let reportText = ""
     for (const [key, value] of Object.entries(groupedData)) {
@@ -67,7 +68,7 @@ const buildReport = (data, embed) => {
             fieldValue += `${songLineText}\n`
         })
         fieldValue = "```python\n" + fieldValue + "```"
-        embed.addField(`CA Rank #${key}s`, fieldValue, false)
+        embed.addField(`CA Rank #${key}s - 🎖️${helpers.computeMedalsForSpecificRank(`${key}`, summaryData[`${key}`])}`, fieldValue, false)
     }
 }
 
