@@ -66,13 +66,14 @@ const getMinStarValue = (inputStr) => {
 	if (value > maxStarValueDefault) {
 		value = maxStarValueDefault;
 	}
-	return value;
+	return value.toFixed(2);
 }
 
 const getMaxStarValue = (inputStr, minStarValue) => {
 	let value = Number.parseFloat(inputStr);
+	console.log("max star value " + value)
 	if (isNaN(value)) {
-		value = 0;
+		value = maxStarValueDefault;
 	}
 	if (value < minStarValue) {
 		value = minStarValue;
@@ -80,7 +81,7 @@ const getMaxStarValue = (inputStr, minStarValue) => {
 	if (value > maxStarValueDefault) {
 		value = maxStarValueDefault;
 	}
-	return value;
+	return value.toFixed(2);
 }
 
 module.exports = {
@@ -101,7 +102,7 @@ module.exports = {
 			subcommand
 				.setName("medal-list")
 				.setDescription("Player rank song list")
-				.addIntegerOption(option =>
+				.addStringOption(option =>
 					option.setName("player_id")
 						.setDescription("ID of player.")
 						.setRequired(true)
@@ -130,7 +131,7 @@ module.exports = {
 
 		if (subcommand === "medal-list") {
 
-			const player_id = interaction.options.getString("player_id")
+			const player_id = helpers.extractPlayerId(interaction.options.getString("player_id"));
 			const min_star_value = getMinStarValue(interaction.options.getString("min_star_value"));
 			const max_star_value = getMaxStarValue(interaction.options.getString("max_star_value"), min_star_value);
 
