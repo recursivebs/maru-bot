@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
+const groupBy = require('group-by');
 const helpers = require('../helpers');
 const playerRankSongListReport = require('../report-builders/player-rank-song-list-report')
 
@@ -16,7 +17,7 @@ const buildEmbed = (playerInfo) => {
 		starFilterText = ` (for ⭐${playerInfo.min_star_value} to ⭐${playerInfo.max_star_value})`
 	}
 
-	embed.setTitle(`${playerInfo.player_name}'s top regional scores${starFilterText}:`)
+	embed.setTitle(`Top Regional Scores for ${playerInfo.player_name} - Rank ${playerInfo.medal_rank}, 🎖️${playerInfo.medals} ${starFilterText}:`)
 	return embed;
 }
 
@@ -71,7 +72,6 @@ const getMinStarValue = (inputStr) => {
 
 const getMaxStarValue = (inputStr, minStarValue) => {
 	let value = Number.parseFloat(inputStr);
-	console.log("max star value " + value)
 	if (isNaN(value)) {
 		value = maxStarValueDefault;
 	}
@@ -101,7 +101,7 @@ module.exports = {
 		.addSubcommand(subcommand =>
 			subcommand
 				.setName("medal-list")
-				.setDescription("Player rank song list")
+				.setDescription("Lists a player's top 10 regional plays.")
 				.addStringOption(option =>
 					option.setName("player_id")
 						.setDescription("ID of player.")
@@ -116,6 +116,11 @@ module.exports = {
 					option.setName("max_star_value")
 					.setDescription("Maximum star value. Defaults to MAX.")
 					.setRequired(false)
+				)
+				.addBooleanOption(option =>
+					option.setName("hidden")
+					.setDescription("If true, this report will only be visible to you.")
+					.setRequired(false)
 				),
 			)
 		,
@@ -125,6 +130,7 @@ module.exports = {
 
 		const subcommand = interaction.options.getSubcommand()
 		let cachedData = [];
+		let summaryData = {};
 		let playerInfo = {};
 		let currentPage = 1;
 		const pageLength = 15;
@@ -164,11 +170,15 @@ module.exports = {
 					maxPage = maxPage + 1;
 				}
 
+				const groupedData = groupBy(cachedData, 'rank')
+				for (const [key, value] of Object.entries(groupedData)) {
+					summaryData[key] = value.length
+				}
 
 				let slicedData = getPageData(cachedData, currentPage, pageLength);
 
 				embed = buildEmbed(playerInfo);
-				playerRankSongListReport.build(slicedData, embed);
+				playerRankSongListReport.build(slicedData, summaryData, embed);
 
 				const buttonRow = buildPagination(currentPage, maxPage, true, maxPage === 1);
 
@@ -198,7 +208,7 @@ module.exports = {
 						const disablePrevious = (currentPage === 1);
 						buttons = buildPagination(currentPage, maxPage, disablePrevious, disableNext);
 						slicedData = getPageData(cachedData, currentPage, pageLength);
-						playerRankSongListReport.build(slicedData, nextEmbed);
+						playerRankSongListReport.build(slicedData, summaryData, nextEmbed);
 						await i.update({embeds: [nextEmbed], components: [buttons]})
 					}
 				});
@@ -214,7 +224,7 @@ module.exports = {
 						const disablePrevious = (currentPage === 1);
 						buttons = buildPagination(currentPage, maxPage, disablePrevious, disableNext);
 						slicedData = getPageData(cachedData, currentPage, pageLength);
-						playerRankSongListReport.build(slicedData, nextEmbed);
+						playerRankSongListReport.build(slicedData, summaryData, nextEmbed);
 						await i.update({embeds: [nextEmbed], components: [buttons]})
 					}
 				});
@@ -227,7 +237,7 @@ module.exports = {
 						const disablePrevious = true;
 						buttons = buildPagination(currentPage, maxPage, disablePrevious, disableNext);
 						slicedData = getPageData(cachedData, currentPage, pageLength);
-						playerRankSongListReport.build(slicedData, nextEmbed);
+						playerRankSongListReport.build(slicedData, summaryData, nextEmbed);
 						await i.update({embeds: [nextEmbed], components: [buttons]})
 					}
 				});
@@ -241,7 +251,7 @@ module.exports = {
 						const disablePrevious = (currentPage === 1);
 						buttons = buildPagination(currentPage, maxPage, disablePrevious, disableNext);
 						slicedData = getPageData(cachedData, currentPage, pageLength);
-						playerRankSongListReport.build(slicedData, nextEmbed);
+						playerRankSongListReport.build(slicedData, summaryData, nextEmbed);
 						await i.update({embeds: [nextEmbed], components: [buttons]})
 					}
 				});
