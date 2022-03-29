@@ -26,27 +26,26 @@ module.exports = {
         fetch(playerInfoEndpoint)
 			.then((response) => response.json())
 			.then(data => {
-
 				playerIndex = data["medal_rank"];
+				if (playerIndex < 6) {
+					console.log(playerIndex);
+					playerIndex = 6;
+				}
+				const reportEndpoint = "https://marubot.bluecurse.com/report/player-medals";
+				return fetch(reportEndpoint)
+					.then((response) => response.json())
+					.then(data => {
+						const topTen = data.slice(playerIndex - 6, playerIndex + 4);
+						let embed = new MessageEmbed()
+							.setColor("#EFFF00")
+							.setTitle("Relative Leaderboard")
+						let message = ""
+						topTen.forEach(x => message = `${message}${x.medal_rank} - ${x.player_name} - ${x.medals}\n`)
+						embed.setDescription(message);
+						interaction.editReply({embeds: [embed]});
+					});
 			});
         
-        if (playerIndex < 6) {
-            console.log(playerIndex);
-            playerIndex = 6;
-        }
 
-		const reportEndpoint = "https://marubot.bluecurse.com/report/player-medals";
-		fetch(reportEndpoint)
-		.then((response) => response.json())
-		.then(data => {
-			const topTen = data.slice(playerIndex - 6, playerIndex + 4);
-			let embed = new MessageEmbed()
-				.setColor("#EFFF00")
-				.setTitle("Relative Leaderboard")
-			let message = ""
-			topTen.forEach(x => message = `${message}${x.medal_rank} - ${x.player_name} - ${x.medals}\n`)
-			embed.setDescription(message);
-			interaction.editReply({embeds: [embed]});
-		});
 	},
 };
