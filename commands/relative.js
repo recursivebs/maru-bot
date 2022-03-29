@@ -6,7 +6,7 @@ const helpers = require('../helpers');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('relative')
-		.setDescription('Displays the nearest players on the leaderboard, relative to a player')
+		.setDescription('Displays the nearest players on the leaderboard')
         .addStringOption(option =>
 			option.setName("player_id")
 				.setDescription("player_id")
@@ -27,20 +27,19 @@ module.exports = {
 			.then((response) => response.json())
 			.then(data => {
 
-				playerIndex = data["medals"];
-
-				return fetch(playerRankSongListEndpoint);
+				playerIndex = data["medal_rank"];
 			});
         
-        if (playerIndex < 4) {
-            playerIndex = 4;
+        if (playerIndex < 6) {
+            console.log(playerIndex);
+            playerIndex = 6;
         }
 
 		const reportEndpoint = "https://marubot.bluecurse.com/report/player-medals";
 		fetch(reportEndpoint)
 		.then((response) => response.json())
 		.then(data => {
-			const topTen = data.slice(playerIndex - 4, playerIndex + 4);
+			const topTen = data.slice(playerIndex - 6, playerIndex + 4);
 			let embed = new MessageEmbed()
 				.setColor("#EFFF00")
 				.setTitle("Relative Leaderboard")
