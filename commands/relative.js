@@ -55,7 +55,11 @@ module.exports = {
 							.setColor("#EFFF00")
 							.setTitle("Relative Leaderboard")
 						let message = ""
+<<<<<<< HEAD
 						topTen.forEach(x => message = ((x.player_id === playerInfo.player_id)? '**' : '') + `${message}${x.medal_rank} - ${x.player_name} - ${x.medals}` + ((x.player_id === playerInfo.player_id)? '**' : '') + `\n`)
+=======
+						topTen.forEach(x => message = ((x.medal_rank == playerIndex)? '**' : '') + `${message}${x.medal_rank} - ${x.player_name} - ${x.medals}` + ((x.medal_rank == playerIndex)? '**' : '') + `\n`)
+>>>>>>> 640819bf162bcb4833b192650826b049867aa1cb
 						embed.setDescription(message);
 						interaction.editReply({embeds: [embed]});
 					});
