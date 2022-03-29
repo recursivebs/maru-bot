@@ -28,6 +28,5 @@ module.exports = {
 			embed.setDescription(message);
 			interaction.editReply({embeds: [embed]});
 		});
-
 	},
 };
