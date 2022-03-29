@@ -3,15 +3,6 @@ const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 const helpers = require('../helpers');
 
-const shortenString = (str, maxLen) => {
-    if (str.length > maxLen) {
-        return `${str.substring(0, maxLen)}...`;
-    }
-    return str;
-}
-
-const MAX_NAME_LEN = 18
-
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('relative')
