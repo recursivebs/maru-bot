@@ -40,7 +40,7 @@ module.exports = {
 							.setColor("#EFFF00")
 							.setTitle("Relative Leaderboard")
 						let message = ""
-						topTen.forEach(x => message = ((x.medal_rank === playerIndex)? '**' : '') + `${message}${x.medal_rank} - ${x.player_name} - ${x.medals}` + ((x.medal_rank === playerIndex)? '**' : '') + `\n`)
+						topTen.forEach(x => message = ((x.medal_rank == playerIndex)? '**' : '') + `${message}${x.medal_rank} - ${x.player_name} - ${x.medals}` + ((x.medal_rank == playerIndex)? '**' : '') + `\n`)
 						embed.setDescription(message);
 						interaction.editReply({embeds: [embed]});
 					});
