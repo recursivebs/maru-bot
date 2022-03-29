@@ -3,6 +3,15 @@ const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 const helpers = require('../helpers');
 
+const shortenString = (str, maxLen) => {
+    if (str.length > maxLen) {
+        return `${str.substring(0, maxLen)}...`;
+    }
+    return str;
+}
+
+const MAX_NAME_LEN = 18
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('relative')
@@ -45,21 +54,39 @@ module.exports = {
 						});
 
 						playerIndex = filteredData.map(player => player.player_id).indexOf(playerInfo.player_id);
-						if (playerIndex < 6) {
-							playerIndex = 6;
+						if (playerIndex < 5) {
+							playerIndex = 5;
 						}
-						console.log(playerIndex);
 
-						const topTen = filteredData.slice(playerIndex - 6, playerIndex + 4);
+						const topTen = filteredData.slice(playerIndex - 5, playerIndex + 6);
 						let embed = new MessageEmbed()
 							.setColor("#EFFF00")
-							.setTitle("Relative Leaderboard")
-						let message = ""
-<<<<<<< HEAD
-						topTen.forEach(x => message = ((x.player_id === playerInfo.player_id)? '**' : '') + `${message}${x.medal_rank} - ${x.player_name} - ${x.medals}` + ((x.player_id === playerInfo.player_id)? '**' : '') + `\n`)
-=======
-						topTen.forEach(x => message = ((x.medal_rank == playerIndex)? '**' : '') + `${message}${x.medal_rank} - ${x.player_name} - ${x.medals}` + ((x.medal_rank == playerIndex)? '**' : '') + `\n`)
->>>>>>> 640819bf162bcb4833b192650826b049867aa1cb
+							.setTitle("Relative Leaderboard for " + playerInfo.player_name)
+						let message = "```diff\n"
+
+						// length of the number of the last rank in the list (largest)
+						let rankLen = topTen[topTen.length-1].medal_rank.toString().length;
+						// Length of the number of the first medal count (largest)
+						let medLen = topTen[0].medals.toString().length;
+
+						topTen.forEach(player => {
+                            let youToken = "  "
+                            if (player.player_id === playerInfo.player_id) {
+                                youToken = "+ "
+                            }
+                            let line = `${youToken}${player.medal_rank}`
+
+                            line += ` `.repeat((3 + rankLen) - line.length);
+
+                            line +=`- 🎖️${player.medals}` 
+
+                            line += ` `.repeat((11 + medLen) - line.length);
+                            
+                            line += `- ${player.player_name}\n`
+
+                            message += line;
+                        })
+                        message += '```'
 						embed.setDescription(message);
 						interaction.editReply({embeds: [embed]});
 					});
