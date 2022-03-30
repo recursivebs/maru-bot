@@ -9,4 +9,4 @@ module.exports = {
 	},
 };
 
-//https://cdn.discordapp.com/emojis/958219976106467349.webp?size=44&quality=lossless 
+//https://cdn.discordapp.com/emojis/958219976106467349.webp?size=44&quality=lossless  
