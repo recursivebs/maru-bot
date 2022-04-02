@@ -7,6 +7,18 @@ const playerRankSongListReport = require('../report-builders/player-rank-song-li
 
 const getPageData = (d, page, page_length) => d.slice((page - 1) * page_length, ((page - 1) * page_length) + page_length);
 
+const generate_spaces = (in_str, max_spaces) => {
+	let len = ("" + in_str).length;
+	if ((max_spaces - len) < 0) {
+		return "";
+	}
+	let strSpaces = "";
+	for (let i = 0; i < (max_spaces - len); i++) {
+		strSpaces += " ";
+	}
+	return strSpaces;
+}
+
 const buildEmbed = (playerInfo) => {
 	let embed = new MessageEmbed()
 		.setColor("#EFFF00")
@@ -356,19 +368,19 @@ module.exports = {
 					.setColor("#FFFF00")
 					.setTitle(`Star Rankings for Player ${data.player_name}`)
 
-				message += ` ★0  | Rank ${data.rank_0}\t| 🎖️${data.medals_0}\n`
-				message += ` ★1  | Rank ${data.rank_1}\t| 🎖️${data.medals_1}\n`
-				message += ` ★2  | Rank ${data.rank_2}\t| 🎖️${data.medals_2}\n`
-				message += ` ★3  | Rank ${data.rank_3}\t| 🎖️${data.medals_3}\n`
-				message += ` ★4  | Rank ${data.rank_4}\t| 🎖️${data.medals_4}\n`
-				message += ` ★5  | Rank ${data.rank_5}\t| 🎖️${data.medals_5}\n`
-				message += ` ★6  | Rank ${data.rank_6}\t| 🎖️${data.medals_6}\n`
-				message += ` ★7  | Rank ${data.rank_7}\t| 🎖️${data.medals_7}\n`
-				message += ` ★8  | Rank ${data.rank_8}\t| 🎖️${data.medals_8}\n`
-				message += ` ★9  | Rank ${data.rank_9}\t| 🎖️${data.medals_9}\n`
-				message += ` ★10 | Rank ${data.rank_10}\t| 🎖️${data.medals_10}\n`
-				message += ` ★11 | Rank ${data.rank_11}\t| 🎖️${data.medals_11}\n`
-				message += ` ★12 | Rank ${data.rank_12}\t| 🎖️${data.medals_12}\n`
+				message += ` ★0  | ️🎖️${data.medals_0}${generate_spaces(data.medals_0, 6)}| Rank ${data.rank_0} \n`
+				message += ` ★1  | ️🎖️${data.medals_1}${generate_spaces(data.medals_1, 6)}| Rank ${data.rank_1} \n`
+				message += ` ★2  | ️🎖️${data.medals_2}${generate_spaces(data.medals_2, 6)}| Rank ${data.rank_2} \n`
+				message += ` ★3  | ️🎖️${data.medals_3}${generate_spaces(data.medals_3, 6)}| Rank ${data.rank_3} \n`
+				message += ` ★4  | ️🎖️${data.medals_4}${generate_spaces(data.medals_4, 6)}| Rank ${data.rank_4} \n`
+				message += ` ★5  | ️🎖️${data.medals_5}${generate_spaces(data.medals_5, 6)}| Rank ${data.rank_5} \n`
+				message += ` ★6  | ️🎖️${data.medals_6}${generate_spaces(data.medals_6, 6)}| Rank ${data.rank_6} \n`
+				message += ` ★7  | ️🎖️${data.medals_7}${generate_spaces(data.medals_7, 6)}| Rank ${data.rank_7} \n`
+				message += ` ★8  | ️🎖️${data.medals_8}${generate_spaces(data.medals_8, 6)}| Rank ${data.rank_8} \n`
+				message += ` ★9  | ️🎖️${data.medals_9}${generate_spaces(data.medals_9, 6)}| Rank ${data.rank_9} \n`
+				message += ` ★10 | ️🎖️${data.medals_10}${generate_spaces(data.medals_10, 6)}| Rank ${data.rank_10}\n`
+				message += ` ★11 | ️🎖️${data.medals_11}${generate_spaces(data.medals_11, 6)}| Rank ${data.rank_11}\n`
+				message += ` ★12 | ️🎖️${data.medals_12}${generate_spaces(data.medals_12, 6)}| Rank ${data.rank_12}\n`
 
 				message += '```'
 				embed.setDescription(message);
