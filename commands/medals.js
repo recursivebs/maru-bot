@@ -265,7 +265,7 @@ module.exports = {
 			});
 
 		} else if (subcommand === "leaderboard") {
-			return interaction.editReply(`STOP`)
+			return interaction.editReply(`<@236098541523566593> poggies`)
 		}
 
 
