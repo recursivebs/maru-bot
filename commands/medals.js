@@ -123,6 +123,26 @@ module.exports = {
 					.setRequired(false)
 				),
 			)
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName("medals-gained")
+				.setDescription("Displays the top medals gained by player for the day.")
+			)
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName("medals-lost")
+				.setDescription("Displays the top medals lost by player for the day.")
+			)
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName("star-rankings")
+				.setDescription("Displays a breakdown report by star for a given player id")
+				.addStringOption(option =>
+					option.setName("player_id")
+						.setDescription("ID of player.")
+						.setRequired(true)
+					)
+			)
 		,
 	async execute(interaction) {
 
@@ -265,7 +285,95 @@ module.exports = {
 			});
 
 		} else if (subcommand === "leaderboard") {
+
 			return interaction.editReply(`<@236098541523566593> poggies`)
+
+		} else if (subcommand === "medals-gained") {
+
+			const reportEndpoint = "https://marubot.bluecurse.com/report/player-medals-diff/1";
+			fetch(reportEndpoint)
+			.then((response) => response.json())
+			.then(data => {
+
+				const gainersToShow = 20;
+				let gainers = data.filter(x => x.medals_diff > 0)
+								.sort((a, b) => b.medals_diff - a.medals_diff)
+								.slice(0, gainersToShow);
+
+				let message = "```"
+
+				let embed = new MessageEmbed()
+					.setColor("#00FF00")
+					.setTitle("Medals gained today")
+
+				gainers.forEach(report => {
+					let line = ` +🎖️${report.medals_diff} - ${report.player_name}\n` 
+					message += line;
+				})
+				message += '```'
+				embed.setDescription(message);
+				interaction.editReply({embeds: [embed]});
+			});
+
+		} else if (subcommand === "medals-lost") {
+
+			const reportEndpoint = "https://marubot.bluecurse.com/report/player-medals-diff/1";
+			fetch(reportEndpoint)
+			.then((response) => response.json())
+			.then(data => {
+
+				const losersToShow = 20;
+				let losers = data.filter(x => x.medals_diff < 0)
+								.sort((a, b) => a.medals_diff - b.medals_diff)
+								.slice(0, losersToShow);
+
+				let message = "```"
+
+				let embed = new MessageEmbed()
+					.setColor("#FF0000")
+					.setTitle("Medals lost today")
+
+				losers.forEach(report => {
+					let line = ` -🎖️${Math.abs(report.medals_diff)} - ${report.player_name}\n` 
+					message += line;
+				})
+				message += '```'
+				embed.setDescription(message);
+				interaction.editReply({embeds: [embed]});
+			});
+
+		} else if (subcommand === "star-rankings") {
+
+			const player_id = helpers.extractPlayerId(interaction.options.getString("player_id"));
+			const reportEndpoint = "https://marubot.bluecurse.com/report/player-star-rankings/" + player_id;
+			fetch(reportEndpoint)
+			.then((response) => response.json())
+			.then(data => {
+
+				let message = "```"
+
+				let embed = new MessageEmbed()
+					.setColor("#FFFF00")
+					.setTitle(`Star Rankings for Player ${data.player_name}`)
+
+				message += ` ★0  | Rank ${data.rank_0}\t| 🎖️${data.medals_0}\n`
+				message += ` ★1  | Rank ${data.rank_1}\t| 🎖️${data.medals_1}\n`
+				message += ` ★2  | Rank ${data.rank_2}\t| 🎖️${data.medals_2}\n`
+				message += ` ★3  | Rank ${data.rank_3}\t| 🎖️${data.medals_3}\n`
+				message += ` ★4  | Rank ${data.rank_4}\t| 🎖️${data.medals_4}\n`
+				message += ` ★5  | Rank ${data.rank_5}\t| 🎖️${data.medals_5}\n`
+				message += ` ★6  | Rank ${data.rank_6}\t| 🎖️${data.medals_6}\n`
+				message += ` ★7  | Rank ${data.rank_7}\t| 🎖️${data.medals_7}\n`
+				message += ` ★8  | Rank ${data.rank_8}\t| 🎖️${data.medals_8}\n`
+				message += ` ★9  | Rank ${data.rank_9}\t| 🎖️${data.medals_9}\n`
+				message += ` ★10 | Rank ${data.rank_10}\t| 🎖️${data.medals_10}\n`
+				message += ` ★11 | Rank ${data.rank_11}\t| 🎖️${data.medals_11}\n`
+				message += ` ★12 | Rank ${data.rank_12}\t| 🎖️${data.medals_12}\n`
+
+				message += '```'
+				embed.setDescription(message);
+				interaction.editReply({embeds: [embed]});
+			})
 		}
 
 
