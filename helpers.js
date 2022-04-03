@@ -50,26 +50,8 @@ const computeFactorForMedals = (rank) => {
     return factor;
 }
 
-const sass = (text) => {
-    if (Math.random() > 0.1) {
-        return text;
-    } else {
-        text = text.split("");
-        let out = "";
-        for (var i = 0; i < text.length; i++) {
-            if (Math.random() > 0.5){
-                out += text[i].toLowerCase();
-            } else {
-                out += text[i].toUpperCase();
-            }
-        }
-        return out;
-    }
-}
-
 
 exports.trimEmbed = trimEmbed;
 exports.extractPlayerId = extractPlayerId;
 exports.computeMedalsForSpecificRank = computeMedalsForSpecificRank;
 exports.computeFactorForMedals = computeFactorForMedals;
-exports.sass = sass;
