@@ -7,6 +7,18 @@ const playerRankSongListReport = require('../report-builders/player-rank-song-li
 
 const getPageData = (d, page, page_length) => d.slice((page - 1) * page_length, ((page - 1) * page_length) + page_length);
 
+const generate_spaces = (in_str, max_spaces) => {
+	let len = ("" + in_str).length;
+	if ((max_spaces - len) < 0) {
+		return "";
+	}
+	let strSpaces = "";
+	for (let i = 0; i < (max_spaces - len); i++) {
+		strSpaces += " ";
+	}
+	return strSpaces;
+}
+
 const buildEmbed = (playerInfo) => {
 	let embed = new MessageEmbed()
 		.setColor("#EFFF00")
@@ -122,6 +134,26 @@ module.exports = {
 					.setDescription("If true, this report will only be visible to you.")
 					.setRequired(false)
 				),
+			)
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName("medals-gained")
+				.setDescription("Displays the top medals gained by player for the day.")
+			)
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName("medals-lost")
+				.setDescription("Displays the top medals lost by player for the day.")
+			)
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName("star-rankings")
+				.setDescription("Displays a breakdown report by star for a given player id")
+				.addStringOption(option =>
+					option.setName("player_id")
+						.setDescription("ID of player.")
+						.setRequired(true)
+					)
 			)
 		,
 	async execute(interaction) {
@@ -265,7 +297,95 @@ module.exports = {
 			});
 
 		} else if (subcommand === "leaderboard") {
-			return interaction.editReply(`STOP`)
+
+			return interaction.editReply(`<@236098541523566593> poggies`)
+
+		} else if (subcommand === "medals-gained") {
+
+			const reportEndpoint = "https://marubot.bluecurse.com/report/player-medals-diff/1";
+			fetch(reportEndpoint)
+			.then((response) => response.json())
+			.then(data => {
+
+				const gainersToShow = 20;
+				let gainers = data.filter(x => x.medals_diff > 0)
+								.sort((a, b) => b.medals_diff - a.medals_diff)
+								.slice(0, gainersToShow);
+
+				let message = "```"
+
+				let embed = new MessageEmbed()
+					.setColor("#00FF00")
+					.setTitle("Medals gained today")
+
+				gainers.forEach(report => {
+					let line = ` +🎖️${report.medals_diff} - ${report.player_name}\n` 
+					message += line;
+				})
+				message += '```'
+				embed.setDescription(message);
+				interaction.editReply({embeds: [embed]});
+			});
+
+		} else if (subcommand === "medals-lost") {
+
+			const reportEndpoint = "https://marubot.bluecurse.com/report/player-medals-diff/1";
+			fetch(reportEndpoint)
+			.then((response) => response.json())
+			.then(data => {
+
+				const losersToShow = 20;
+				let losers = data.filter(x => x.medals_diff < 0)
+								.sort((a, b) => a.medals_diff - b.medals_diff)
+								.slice(0, losersToShow);
+
+				let message = "```"
+
+				let embed = new MessageEmbed()
+					.setColor("#FF0000")
+					.setTitle("Medals lost today")
+
+				losers.forEach(report => {
+					let line = ` -🎖️${Math.abs(report.medals_diff)} - ${report.player_name}\n` 
+					message += line;
+				})
+				message += '```'
+				embed.setDescription(message);
+				interaction.editReply({embeds: [embed]});
+			});
+
+		} else if (subcommand === "star-rankings") {
+
+			const player_id = helpers.extractPlayerId(interaction.options.getString("player_id"));
+			const reportEndpoint = "https://marubot.bluecurse.com/report/player-star-rankings/" + player_id;
+			fetch(reportEndpoint)
+			.then((response) => response.json())
+			.then(data => {
+
+				let message = "```"
+
+				let embed = new MessageEmbed()
+					.setColor("#FFFF00")
+					.setTitle(`Star Rankings for Player ${data.player_name}`)
+
+				message += ` ★0  | ️🎖️${data.medals_0}${generate_spaces(data.medals_0, 6)}| Rank ${data.rank_0} \n`
+				message += ` ★1  | ️🎖️${data.medals_1}${generate_spaces(data.medals_1, 6)}| Rank ${data.rank_1} \n`
+				message += ` ★2  | ️🎖️${data.medals_2}${generate_spaces(data.medals_2, 6)}| Rank ${data.rank_2} \n`
+				message += ` ★3  | ️🎖️${data.medals_3}${generate_spaces(data.medals_3, 6)}| Rank ${data.rank_3} \n`
+				message += ` ★4  | ️🎖️${data.medals_4}${generate_spaces(data.medals_4, 6)}| Rank ${data.rank_4} \n`
+				message += ` ★5  | ️🎖️${data.medals_5}${generate_spaces(data.medals_5, 6)}| Rank ${data.rank_5} \n`
+				message += ` ★6  | ️🎖️${data.medals_6}${generate_spaces(data.medals_6, 6)}| Rank ${data.rank_6} \n`
+				message += ` ★7  | ️🎖️${data.medals_7}${generate_spaces(data.medals_7, 6)}| Rank ${data.rank_7} \n`
+				message += ` ★8  | ️🎖️${data.medals_8}${generate_spaces(data.medals_8, 6)}| Rank ${data.rank_8} \n`
+				message += ` ★9  | ️🎖️${data.medals_9}${generate_spaces(data.medals_9, 6)}| Rank ${data.rank_9} \n`
+				message += ` ★10 | ️🎖️${data.medals_10}${generate_spaces(data.medals_10, 6)}| Rank ${data.rank_10}\n`
+				message += ` ★11 | ️🎖️${data.medals_11}${generate_spaces(data.medals_11, 6)}| Rank ${data.rank_11}\n`
+				message += ` ★12 | ️🎖️${data.medals_12}${generate_spaces(data.medals_12, 6)}| Rank ${data.rank_12}\n`
+
+				message += '```'
+				embed.setDescription(message);
+				interaction.editReply({embeds: [embed]});
+			})
 		}
 
 
