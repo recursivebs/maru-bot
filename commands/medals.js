@@ -381,46 +381,46 @@ module.exports = {
 
 				let embed = new MessageEmbed()
 					.setColor("#FFFF00")
-					.setTitle(`Star Rankings for Player ${data.player_name}`)
+					.setTitle(`Star Rankings for Player ${player_data.player_name}`)
 
 				if (player_data.rank_0 > 0) {
-					message += ` ★0  | ️CA #${generate_spaces(player_data.rank_0, 5)}| 🎖️${player_data.medals_0}${generate_spaces(player_data.medals_0, 6)}| ${compute_medal_completion(player_data.rank_0, star_report[0].total_medals)}% (of ${star_report[0].total_medals})\n`
+					message += ` ★0  | ️CA #${player_data.rank_0}${generate_spaces(player_data.rank_0, 5)}| 🎖️${player_data.medals_0}${generate_spaces(player_data.medals_0, 6)}| ${compute_medal_completion(player_data.rank_0, star_report[0].total_medals)}% (of ${star_report[0].total_medals})\n`
 				}
 				if (player_data.rank_1 > 0) {
-					message += ` ★1  | ️CA #${generate_spaces(player_data.rank_1, 5)}| 🎖️${player_data.medals_1}${generate_spaces(player_data.medals_1, 6)}| ${compute_medal_completion(player_data.rank_1, star_report[1].total_medals)}% (of ${star_report[1].total_medals})\n`
+					message += ` ★1  | ️CA #${player_data.rank_1}${generate_spaces(player_data.rank_1, 5)}| 🎖️${player_data.medals_1}${generate_spaces(player_data.medals_1, 6)}| ${compute_medal_completion(player_data.rank_1, star_report[1].total_medals)}% (of ${star_report[1].total_medals})\n`
 				}
 				if (player_data.rank_2 > 0) {
-					message += ` ★2  | ️CA #${generate_spaces(player_data.rank_2, 5)}| 🎖️${player_data.medals_2}${generate_spaces(player_data.medals_2, 6)}| ${compute_medal_completion(player_data.rank_2, star_report[2].total_medals)}% (of ${star_report[2].total_medals})\n`
+					message += ` ★2  | ️CA #${player_data.rank_2}${generate_spaces(player_data.rank_2, 5)}| 🎖️${player_data.medals_2}${generate_spaces(player_data.medals_2, 6)}| ${compute_medal_completion(player_data.rank_2, star_report[2].total_medals)}% (of ${star_report[2].total_medals})\n`
 				}
 				if (player_data.rank_3 > 0) {
-					message += ` ★3  | ️CA #${generate_spaces(player_data.rank_3, 5)}| 🎖️${player_data.medals_3}${generate_spaces(player_data.medals_3, 6)}| ${compute_medal_completion(player_data.rank_3, star_report[3].total_medals)}% (of ${star_report[3].total_medals})\n`
+					message += ` ★3  | ️CA #${player_data.rank_3}${generate_spaces(player_data.rank_3, 5)}| 🎖️${player_data.medals_3}${generate_spaces(player_data.medals_3, 6)}| ${compute_medal_completion(player_data.rank_3, star_report[3].total_medals)}% (of ${star_report[3].total_medals})\n`
 				}
 				if (player_data.rank_4 > 0) {
-					message += ` ★4  | ️CA #${generate_spaces(player_data.rank_4, 5)}| 🎖️${player_data.medals_4}${generate_spaces(player_data.medals_4, 6)}| ${compute_medal_completion(player_data.rank_4, star_report[4].total_medals)}% (of ${star_report[4].total_medals})\n`
+					message += ` ★4  | ️CA #${player_data.rank_4}${generate_spaces(player_data.rank_4, 5)}| 🎖️${player_data.medals_4}${generate_spaces(player_data.medals_4, 6)}| ${compute_medal_completion(player_data.rank_4, star_report[4].total_medals)}% (of ${star_report[4].total_medals})\n`
 				}
 				if (player_data.rank_5 > 0) {
-					message += ` ★5  | ️CA #${generate_spaces(player_data.rank_5, 5)}| 🎖️${player_data.medals_5}${generate_spaces(player_data.medals_5, 6)}| ${compute_medal_completion(player_data.rank_5, star_report[5].total_medals)}% (of ${star_report[5].total_medals})\n`
+					message += ` ★5  | ️CA #${player_data.rank_5}${generate_spaces(player_data.rank_5, 5)}| 🎖️${player_data.medals_5}${generate_spaces(player_data.medals_5, 6)}| ${compute_medal_completion(player_data.rank_5, star_report[5].total_medals)}% (of ${star_report[5].total_medals})\n`
 				}
 				if (player_data.rank_6 > 0) {
-					message += ` ★6  | ️CA #${generate_spaces(player_data.rank_6, 5)}| 🎖️${player_data.medals_6}${generate_spaces(player_data.medals_6, 6)}| ${compute_medal_completion(player_data.rank_6, star_report[6].total_medals)}% (of ${star_report[6].total_medals})\n`
+					message += ` ★6  | ️CA #${player_data.rank_6}${generate_spaces(player_data.rank_6, 5)}| 🎖️${player_data.medals_6}${generate_spaces(player_data.medals_6, 6)}| ${compute_medal_completion(player_data.rank_6, star_report[6].total_medals)}% (of ${star_report[6].total_medals})\n`
 				}
 				if (player_data.rank_7 > 0) {
-					message += ` ★7  | ️CA #${generate_spaces(player_data.rank_7, 5)}| 🎖️${player_data.medals_7}${generate_spaces(player_data.medals_7, 6)}| ${compute_medal_completion(player_data.rank_7, star_report[7].total_medals)}% (of ${star_report[7].total_medals})\n`
+					message += ` ★7  | ️CA #${player_data.rank_7}${generate_spaces(player_data.rank_7, 5)}| 🎖️${player_data.medals_7}${generate_spaces(player_data.medals_7, 6)}| ${compute_medal_completion(player_data.rank_7, star_report[7].total_medals)}% (of ${star_report[7].total_medals})\n`
 				}
 				if (player_data.rank_8 > 0) {
-					message += ` ★8  | ️CA #${generate_spaces(player_data.rank_8, 5)}| 🎖️${player_data.medals_8}${generate_spaces(player_data.medals_8, 6)}| ${compute_medal_completion(player_data.rank_8, star_report[8].total_medals)}% (of ${star_report[8].total_medals})\n`
+					message += ` ★8  | ️CA #${player_data.rank_8}${generate_spaces(player_data.rank_8, 5)}| 🎖️${player_data.medals_8}${generate_spaces(player_data.medals_8, 6)}| ${compute_medal_completion(player_data.rank_8, star_report[8].total_medals)}% (of ${star_report[8].total_medals})\n`
 				}
 				if (player_data.rank_9 > 0) {
-					message += ` ★9  | ️CA #${generate_spaces(player_data.rank_9, 5)}| 🎖️${player_data.medals_9}${generate_spaces(player_data.medals_9, 6)}| ${compute_medal_completion(player_data.rank_9, star_report[9].total_medals)}% (of ${star_report[9].total_medals})\n`
+					message += ` ★9  | ️CA #${player_data.rank_9}${generate_spaces(player_data.rank_9, 5)}| 🎖️${player_data.medals_9}${generate_spaces(player_data.medals_9, 6)}| ${compute_medal_completion(player_data.rank_9, star_report[9].total_medals)}% (of ${star_report[9].total_medals})\n`
 				}
 				if (player_data.rank_10 > 0) {
-					message += ` ★10 | ️CA #${generate_spaces(player_data.rank_10, 5)}| 🎖️${player_data.medals_10}${generate_spaces(player_data.medals_10, 6)}| ${compute_medal_completion(player_data.rank_10, star_report[10].total_medals)}% (of ${star_report[10].total_medals})\n`
+					message += ` ★10 | ️CA #${player_data.rank_10}${generate_spaces(player_data.rank_10, 5)}| 🎖️${player_data.medals_10}${generate_spaces(player_data.medals_10, 6)}| ${compute_medal_completion(player_data.rank_10, star_report[10].total_medals)}% (of ${star_report[10].total_medals})\n`
 				}
 				if (player_data.rank_11 > 0) {
-					message += ` ★11 | ️CA #${generate_spaces(player_data.rank_11, 5)}| 🎖️${player_data.medals_11}${generate_spaces(player_data.medals_11, 6)}| ${compute_medal_completion(player_data.rank_11, star_report[11].total_medals)}% (of ${star_report[11].total_medals})\n`
+					message += ` ★11 | ️CA #${player_data.rank_11}${generate_spaces(player_data.rank_11, 5)}| 🎖️${player_data.medals_11}${generate_spaces(player_data.medals_11, 6)}| ${compute_medal_completion(player_data.rank_11, star_report[11].total_medals)}% (of ${star_report[11].total_medals})\n`
 				}
 				if (player_data.rank_12 > 0) {
-					message += ` ★12 | ️CA #${generate_spaces(player_data.rank_12, 5)}| 🎖️${player_data.medals_12}${generate_spaces(player_data.medals_12, 6)}| ${compute_medal_completion(player_data.rank_12, star_report[12].total_medals)}% (of ${star_report[12].total_medals})\n`
+					message += ` ★12 | ️CA #${player_data.rank_12}${generate_spaces(player_data.rank_12, 5)}| 🎖️${player_data.medals_12}${generate_spaces(player_data.medals_12, 6)}| ${compute_medal_completion(player_data.rank_12, star_report[12].total_medals)}% (of ${star_report[12].total_medals})\n`
 				}
 
 				message += '```'
