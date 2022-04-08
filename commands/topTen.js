@@ -46,6 +46,10 @@ module.exports = {
 			message += '```'
 			embed.setDescription(message);
 			interaction.editReply({embeds: [embed]});
+		})
+		.catch(err => {
+			console.log(err);
+			interaction.editReply(`An error occurred ;; the bot is probably updating data right now and I haven't had time to fix, please try again in a minute or two :)`);
 		});
 	},
 };

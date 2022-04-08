@@ -161,6 +161,31 @@ module.exports = {
 						.setRequired(true)
 					)
 			)
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName("best-plays-by-star-summary")
+				.setDescription("Displays the highest acc'd play for each star for a given player id")
+				.addStringOption(option =>
+					option.setName("player_id")
+						.setDescription("ID of player.")
+						.setRequired(true)
+					)
+			)
+			.addSubcommand(subcommand =>
+				subcommand
+					.setName("best-star-plays-by-star")
+					.setDescription("Displays the highest acc'd play for each star for a given player id and star")
+					.addStringOption(option =>
+						option.setName("player_id")
+							.setDescription("ID of player.")
+							.setRequired(true)
+						)
+					.addStringOption(option =>
+						option.setName("star")
+							.setDescription("Star.")
+							.setRequired(true)
+						)
+				)
 		,
 	async execute(interaction) {
 
@@ -300,11 +325,15 @@ module.exports = {
 				lastCollector.on('end', collected => console.log(`Collected ${collected.size} items`));
 
 
+			})
+			.catch(err => {
+				console.log(err);
+				interaction.editReply(`An error occurred ;; the bot is probably updating data right now and I haven't had time to fix, please try again in a minute or two :)`);
 			});
 
 		} else if (subcommand === "leaderboard") {
 
-			return interaction.editReply(`<@236098541523566593> poggies`)
+			return interaction.editReply(`Not yet implemented.`)
 
 		} else if (subcommand === "medals-gained") {
 
@@ -328,7 +357,18 @@ module.exports = {
 					.setColor("#00FF00")
 					.setTitle("Medals gained today")
 
+				let count = 1;
 				gainers.forEach(report => {
+					let emojiToken = "🎖️";
+					if (count === 1) {
+						emojiToken = "🥇";
+					}
+					if (count === 2) {
+						emojiToken = "🥈";
+					}
+					if (count === 3) {
+						emojiToken = "🥉";
+					}
 					let line = ` +🎖️${report.medals_diff} - ${report.player_name}\n` 
 					message += line;
 				})
@@ -351,6 +391,10 @@ module.exports = {
 				message += '```'
 				embed.setDescription(message);
 				interaction.editReply({embeds: [embed]});
+			})
+			.catch(err => {
+				console.log(err);
+				interaction.editReply(`An error occurred ;; the bot is probably updating data right now and I haven't had time to fix, please try again in a minute or two :)`);
 			});
 
 		} else if (subcommand === "medals-lost") {
@@ -401,7 +445,64 @@ module.exports = {
 				message += '```'
 				embed.setDescription(message);
 				interaction.editReply({embeds: [embed]});
+			})
+			.catch(err => {
+				console.log(err);
+				interaction.editReply(`An error occurred ;; the bot is probably updating data right now and I haven't had time to fix, please try again in a minute or two :)`);
 			});
+
+		} else if (subcommand === "best-plays-by-star-summary") {
+
+			const player_id = helpers.extractPlayerId(interaction.options.getString("player_id"));
+			const playerDataEndpoint = "https://marubot.bluecurse.com/report/player-star-rankings/" + player_id;
+			const reportEndpoint = "https://marubot.bluecurse.com/report/best-star-plays-summary/" + player_id;
+
+
+			let playerDataResponse = await fetch(playerDataEndpoint)
+			let playerData = await playerDataResponse.json()
+			let reportResponse = await fetch(reportEndpoint)
+			let reportData = await reportResponse.json()
+
+			let message = "```"
+
+			let embed = new MessageEmbed()
+				.setColor("#FFFF00")
+				.setTitle(`Best Star Plays Summary for Player ${playerData.player_name}`)
+
+			reportData.forEach(row => {
+				message += `⭐${row.stars}${generate_spaces(row.stars, 5)} | ${row.score}%${generate_spaces(row.score, 5)} | ${playerRankSongListReport.shortenDifficulty(row)} | ${row.song_name} [${row.level_author_name}]\n`
+			})
+
+			message += '```'
+			embed.setDescription(message);
+			await interaction.editReply({embeds: [embed]});
+
+		} else if (subcommand === "best-star-plays-by-star") {
+
+			const player_id = helpers.extractPlayerId(interaction.options.getString("player_id"));
+			const star = Math.floor(getMinStarValue(interaction.options.getString("star")));
+			const playerDataEndpoint = "https://marubot.bluecurse.com/report/player-star-rankings/" + player_id;
+			const reportEndpoint = "https://marubot.bluecurse.com/report/best-star-plays-by-star/" + player_id + "/" + star;
+
+			let playerDataResponse = await fetch(playerDataEndpoint)
+			let playerData = await playerDataResponse.json()
+			let reportResponse = await fetch(reportEndpoint)
+			let reportData = await reportResponse.json()
+
+			let message = "```"
+
+			let embed = new MessageEmbed()
+				.setColor("#FFFF00")
+				.setTitle(`Best Star Plays for Player ${playerData.player_name}, ⭐${star}`)
+
+			reportData.forEach(row => {
+				message += `⭐${row.stars}${generate_spaces(row.stars, 5)} | ${row.score}%${generate_spaces(row.score, 5)} | ${playerRankSongListReport.shortenDifficulty(row)} | ${row.song_name} [${row.level_author_name}]\n`
+			})
+
+			message += '```'
+			embed.setDescription(message);
+			await interaction.editReply({embeds: [embed]});
+
 
 		} else if (subcommand === "star-rankings") {
 
@@ -471,6 +572,10 @@ module.exports = {
 				embed.setDescription(message);
 				interaction.editReply({embeds: [embed]});
 			})
+			.catch(err => {
+				console.log(err);
+				interaction.editReply(`An error occurred ;; the bot is probably updating data right now and I haven't had time to fix, please try again in a minute or two :)`);
+			});
 		}
 
 

@@ -73,3 +73,4 @@ const buildReport = (data, summaryData, embed) => {
 }
 
 exports.build = buildReport;
+exports.shortenDifficulty = shortenDifficulty;
