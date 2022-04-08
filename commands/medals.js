@@ -453,35 +453,43 @@ module.exports = {
 
 		} else if (subcommand === "best-plays-by-star-summary") {
 
-			const player_id = helpers.extractPlayerId(interaction.options.getString("player_id"));
-			const playerDataEndpoint = "https://marubot.bluecurse.com/report/player-star-rankings/" + player_id;
-			const reportEndpoint = "https://marubot.bluecurse.com/report/best-star-plays-summary/" + player_id;
+			try {
+
+				const player_id = helpers.extractPlayerId(interaction.options.getString("player_id"));
+				const playerDataEndpoint = `https://scoresaber.com/api/player/${player_id}/full`
+				const reportEndpoint = "https://marubot.bluecurse.com/report/best-star-plays-summary/" + player_id;
 
 
-			let playerDataResponse = await fetch(playerDataEndpoint)
-			let playerData = await playerDataResponse.json()
-			let reportResponse = await fetch(reportEndpoint)
-			let reportData = await reportResponse.json()
+				let playerDataResponse = await fetch(playerDataEndpoint)
+				let playerData = await playerDataResponse.json()
+				let reportResponse = await fetch(reportEndpoint)
+				let reportData = await reportResponse.json()
 
-			let message = "```"
+				let message = "```"
 
-			let embed = new MessageEmbed()
-				.setColor("#FFFF00")
-				.setTitle(`Best Star Plays Summary for Player ${playerData.player_name}`)
+				let embed = new MessageEmbed()
+					.setColor("#FFFF00")
+					.setTitle(`Best Star Plays Summary for Player ${playerData.name}`)
 
-			reportData.forEach(row => {
-				message += `⭐${row.stars}${generate_spaces(row.stars, 5)} | ${row.score}%${generate_spaces(row.score, 5)} | ${playerRankSongListReport.shortenDifficulty(row)} | ${row.song_name} [${row.level_author_name}]\n`
-			})
+				reportData.forEach(row => {
+					message += `⭐${row.stars}${generate_spaces(row.stars, 5)} | ${row.score}%${generate_spaces(row.score, 5)} | ${playerRankSongListReport.shortenDifficulty(row)} | ${row.song_name} [${row.level_author_name}]\n`
+				})
 
-			message += '```'
-			embed.setDescription(message);
-			await interaction.editReply({embeds: [embed]});
+				message += '```'
+				embed.setDescription(message);
+				await interaction.editReply({embeds: [embed]});
+
+			} catch(err) {
+				console.log(err)
+				return interaction.editReply(`An error occurred ;; the bot is probably updating data right now and I haven't had time to fix, please try again in a minute or two :)`);
+			}
+
 
 		} else if (subcommand === "best-star-plays-by-star") {
 
 			const player_id = helpers.extractPlayerId(interaction.options.getString("player_id"));
 			const star = Math.floor(getMinStarValue(interaction.options.getString("star")));
-			const playerDataEndpoint = "https://marubot.bluecurse.com/report/player-star-rankings/" + player_id;
+			const playerDataEndpoint = `https://scoresaber.com/api/player/${player_id}/full`
 			const reportEndpoint = "https://marubot.bluecurse.com/report/best-star-plays-by-star/" + player_id + "/" + star;
 
 			let playerDataResponse = await fetch(playerDataEndpoint)
@@ -493,7 +501,7 @@ module.exports = {
 
 			let embed = new MessageEmbed()
 				.setColor("#FFFF00")
-				.setTitle(`Best Star Plays for Player ${playerData.player_name}, ⭐${star}`)
+				.setTitle(`Best Star Plays for Player ${playerData.name}, ⭐${star}`)
 
 			reportData.forEach(row => {
 				message += `⭐${row.stars}${generate_spaces(row.stars, 5)} | ${row.score}%${generate_spaces(row.score, 5)} | ${playerRankSongListReport.shortenDifficulty(row)} | ${row.song_name} [${row.level_author_name}]\n`
