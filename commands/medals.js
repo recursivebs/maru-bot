@@ -102,6 +102,13 @@ const getMaxStarValue = (inputStr, minStarValue) => {
 	return value.toFixed(2);
 }
 
+/*
+
+const hidden = interaction.options.getBoolean('hidden');
+await interaction.deferReply({ ephemeral: hidden });
+
+*/
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('medals')
@@ -369,7 +376,8 @@ module.exports = {
 					if (count === 3) {
 						emojiToken = "🥉";
 					}
-					let line = ` +🎖️${report.medals_diff} - ${report.player_name}\n` 
+					count++;
+					let line = ` +${emojiToken}${report.medals_diff} - ${report.player_name}\n` 
 					message += line;
 				})
 

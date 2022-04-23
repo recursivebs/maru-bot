@@ -29,13 +29,26 @@ module.exports = {
 			// Length of the number of the first medal count (largest)
 			let medLen = topTen[0].medals.toString().length;
 
+			let count = 1;
 			topTen.forEach(player => {
+
+				let emojiToken = "🎖️";
+				if (count === 1) {
+					emojiToken = "🥇";
+				}
+				if (count === 2) {
+					emojiToken = "🥈";
+				}
+				if (count === 3) {
+					emojiToken = "🥉";
+				}
+				count++;
 
 				let line = `  ${player.medal_rank}`
 
 				line += ` `.repeat((3 + rankLen) - line.length);
 
-				line +=`- 🎖️${player.medals}` 
+				line +=`- ${emojiToken}${player.medals}` 
 
 				line += ` `.repeat((11 + medLen) - line.length);
 				
